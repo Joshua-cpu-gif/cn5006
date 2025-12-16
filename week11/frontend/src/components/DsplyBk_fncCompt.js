@@ -1,30 +1,25 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import axios from 'axios';
+import API from "../api";          
 import DisplayData from './DisplayData';
-// we use functional  components. usestate hook 
-//the received data is stored in the state variable 
-//of the componenet  using setState the Data is 
-//rendered using a separate functional component
-// Display Data In Display data, we  pass the state 
-//variable Books  as data recieved  axious lib
-export default function FncDisplayBooks() {
-    const [Books, setBooks] = useState([]);
-    const url ="http://localhost:5000/allbooks/"
 
-    useEffect(()=>{
-      axios.get(url)
-      .then(res=>{
-       setBooks(res.data)    
-  })
-      .catch(err => {
-        console.log("error has occured")
+export default function FncDisplayBooks() {
+  const [Books, setBooks] = useState([]);
+
+  useEffect(() => {
+    API.get("/allbooks")           
+      .then(res => {
+        setBooks(res.data);
       })
-      },[])
-    return(
-        <div>
-         <DisplayData Books={Books}/>
+      .catch(err => {
+        console.log("error has occurred", err);
+      });
+  }, []);
+
+  return (
+    <div>
+      <DisplayData Books={Books} />
     </div>
-    )
-    }
+  );
+}
